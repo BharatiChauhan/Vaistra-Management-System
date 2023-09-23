@@ -51,10 +51,11 @@ public class AuthenticationService {
                 .role(Role.USER)
                 .build();
 
-        repository.save(user);
+       var saveduser= repository.save(user);
 
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
+        var refreshToken = jwtService.generateRefreshToken(user);
+        return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken)
                 .token(jwtToken).build();
 
     }
@@ -71,10 +72,10 @@ public class AuthenticationService {
 
         var jwtToken=jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-        jwtService.revokeAllUserTokens();
-        jwtService.saveUserToken();
-        return AuthenticationResponse.builder()
-                .token(jwtToken).refreshToken(refreshToken).build();
+        revokeAllUserTokens(user);
+        saveUserToken(user,jwtToken);
+        return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken)
+                .build();
 
 
     }
