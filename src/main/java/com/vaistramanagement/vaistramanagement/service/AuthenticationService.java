@@ -48,14 +48,14 @@ public class AuthenticationService {
                 .lastName(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(Role.ADMIN)
                 .build();
 
        var saveduser= repository.save(user);
 
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
-        return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken)
+        return AuthenticationResponse.builder().accessToken(jwtToken)
                 .token(jwtToken).build();
 
     }
@@ -70,11 +70,13 @@ public class AuthenticationService {
         var user=repository.findByEmail(request.getEmail())
                 .orElseThrow();
 
+
+
         var jwtToken=jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user,jwtToken);
-        return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).token(jwtToken)
+        return AuthenticationResponse.builder().accessToken(jwtToken).token(jwtToken)
                 .build();
 
 

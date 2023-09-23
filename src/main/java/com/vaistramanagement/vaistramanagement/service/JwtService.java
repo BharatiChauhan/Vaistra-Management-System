@@ -36,20 +36,20 @@ public class JwtService
         return extractClaim(token,Claims::getSubject);
     }
 
-    public String generateToken(UserDetails userDetails)
+    public String generateToken(User user)
     {
-        return generateToken(new HashMap<>(),userDetails);
+        return generateToken(new HashMap<>(),user);
     }
 
     public String generateToken(
 
             Map<String,Object> extraClaims,
-            UserDetails userDetails)
+            User user)
     {
        return Jwts
                .builder()
                .setClaims(extraClaims)
-               .setSubject(userDetails.getUsername())
+               .setSubject(user.getEmail())
                .setIssuedAt(new Date(System.currentTimeMillis()))
 //               .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
@@ -112,6 +112,6 @@ public class JwtService
 
 
     public String generateRefreshToken(User user) {
-      return   generateRefreshToken(user);
+      return generateToken(user);
     }
 }
