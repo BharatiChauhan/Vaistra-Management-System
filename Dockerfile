@@ -1,5 +1,5 @@
 FROM openjdk:20
-VOLUME /vaistramanagement
+VOLUME /tmp
 EXPOSE 8081
 #COPY target/WG-0.0.1-SNAPSHOT.jar /vaistramanagement.jar
 #ARG JAR_FILE=target/spring-boot-docker.jar
