@@ -63,9 +63,10 @@ public class AuthenticationService {
 //
 //
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),request.getPassword()));
+//        authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        request.getEmail(),request.getPassword()));
+        var users=User.builder().email(request.getEmail()).password(request.getPassword());
 
 
         var user=repository.findByEmail(request.getEmail())
@@ -73,7 +74,8 @@ public class AuthenticationService {
 
 
 
-        var jwtToken=jwtService.generateToken(user);
+        var jwtToken=jwtService.generateToken(users.build());
+
 //        String refreshToken = jwtService.generateRefreshToken(user);
 //        revokeAllUserTokens(user);
 //        saveUserToken(user,jwtToken);
@@ -82,6 +84,10 @@ public class AuthenticationService {
 
 
     }
+
+
+
+   
     private void saveUserToken(User user, String jwtToken) {
         var token = Token.builder()
                 .user(user)
@@ -131,7 +137,6 @@ public class AuthenticationService {
             }
         }
     }
-
 
 
 
