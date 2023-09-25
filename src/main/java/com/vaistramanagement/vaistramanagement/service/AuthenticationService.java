@@ -27,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 
 @Service
@@ -73,10 +74,10 @@ public class AuthenticationService {
 
 
         var jwtToken=jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-        revokeAllUserTokens(user);
-        saveUserToken(user,jwtToken);
-        return AuthenticationResponse.builder().accessToken(jwtToken).token(jwtToken)
+//        String refreshToken = jwtService.generateRefreshToken(user);
+//        revokeAllUserTokens(user);
+//        saveUserToken(user,jwtToken);
+        return AuthenticationResponse.builder().token(jwtToken)
                 .build();
 
 

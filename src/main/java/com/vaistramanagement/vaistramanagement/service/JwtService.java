@@ -1,5 +1,6 @@
 package com.vaistramanagement.vaistramanagement.service;
 
+import com.vaistramanagement.vaistramanagement.config.security.AuthenticationResponse;
 import com.vaistramanagement.vaistramanagement.entity.User;
 import com.vaistramanagement.vaistramanagement.token.Token;
 import com.vaistramanagement.vaistramanagement.token.TokenType;
@@ -20,6 +21,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import static java.security.KeyRep.Type.SECRET;
 
 @Service
 
@@ -114,4 +117,8 @@ public class JwtService
     public String generateRefreshToken(User user) {
       return generateToken(user);
     }
+
+
+
+
 }
