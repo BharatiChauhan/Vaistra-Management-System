@@ -4,10 +4,12 @@ package com.vaistramanagement.vaistramanagement.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaistramanagement.vaistramanagement.config.security.AuthenticationRequest;
 import com.vaistramanagement.vaistramanagement.config.security.AuthenticationResponse;
+import com.vaistramanagement.vaistramanagement.config.security.JwtAuthenticationEntryPoint;
 import com.vaistramanagement.vaistramanagement.config.security.RegisterRequest;
 
 import com.vaistramanagement.vaistramanagement.entity.Role;
 import com.vaistramanagement.vaistramanagement.entity.User;
+import com.vaistramanagement.vaistramanagement.exception.ResourceNotFoundException;
 import com.vaistramanagement.vaistramanagement.repositories.UserRepository;
 import com.vaistramanagement.vaistramanagement.token.Token;
 import com.vaistramanagement.vaistramanagement.token.TokenRepository;
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 
 @Service
@@ -36,6 +39,8 @@ public class AuthenticationService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
+
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     private final JwtService jwtService;
 
@@ -69,8 +74,10 @@ public class AuthenticationService {
 
         var users=User.builder().email(request.getEmail()).password(request.getPassword());
 
+
+        RuntimeException JwtAuthenticationEntryPoint;
         var user=repository.findByEmail(request.getEmail())
-                .orElseThrow(()->new UsernameNotFoundException("Email or Password is not valid"));
+                .orElseThrow(()->new ResourceNotFoundException("Email is invalid"));
 
         var jwtToken=jwtService.generateToken(users.build());
 
