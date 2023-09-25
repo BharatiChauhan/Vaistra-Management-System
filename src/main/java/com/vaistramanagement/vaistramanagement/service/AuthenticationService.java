@@ -66,19 +66,18 @@ public class AuthenticationService {
 //        authenticationManager.authenticate(
 //                new UsernamePasswordAuthenticationToken(
 //                        request.getEmail(),request.getPassword()));
+
         var users=User.builder().email(request.getEmail()).password(request.getPassword());
 
-
         var user=repository.findByEmail(request.getEmail())
-                .orElseThrow();
-
-
+                .orElseThrow(()->new UsernameNotFoundException("Email or Password is not valid"));
 
         var jwtToken=jwtService.generateToken(users.build());
 
 //        String refreshToken = jwtService.generateRefreshToken(user);
 //        revokeAllUserTokens(user);
 //        saveUserToken(user,jwtToken);
+
         return AuthenticationResponse.builder().token(jwtToken)
                 .build();
 
