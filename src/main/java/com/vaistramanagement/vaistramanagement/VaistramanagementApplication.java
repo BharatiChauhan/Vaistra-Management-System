@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-import static com.vaistramanagement.vaistramanagement.entity.Role.ADMIN;
+import static com.vaistramanagement.vaistramanagement.entity.Role.USER;
 
 @SpringBootApplication
 @EnableAsync

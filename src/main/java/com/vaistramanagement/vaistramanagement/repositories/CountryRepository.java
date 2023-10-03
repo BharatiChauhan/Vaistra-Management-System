@@ -20,8 +20,9 @@ public interface CountryRepository extends JpaRepository<Country, Integer> {
     boolean existsByCountryName(String name);
 
 
-    Page<Country> findByCountryNameContainingIgnoreCase(String keyword, Pageable p);
+//    Page<Country> findByCountryNameContainingIgnoreCase(String keyword, Pageable p);
 
 
 
+    Page<Country> findByCountryNameContainingIgnoreCaseOrCountryIdOrStatus(Pageable pageable, String keyword, Integer keyword2, Boolean keyword3);
 }

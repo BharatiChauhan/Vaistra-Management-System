@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -106,9 +107,32 @@ public class CountryServiceImpl implements CountryService {
         Sort sort = (sortDirection.equalsIgnoreCase("asc")) ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Pageable pageable = PageRequest.of(pageNumber, Integer.MAX_VALUE, sort);
 
-        Page<Country> pageCountry = countryRepository.findByCountryNameContainingIgnoreCase(keyword, pageable);
+        if (keyword == null || keyword.isEmpty()) {
+
+          throw new ResourceNotFoundException("Keyword is require");
+            // Handle the case where no keywords are provided
+            //
+        }
+        
+        Integer keyword2= null;
+        Boolean keyword3 = null;
+
+        try {
+            keyword2 = Integer.parseInt(keyword);
+        } catch (NumberFormatException e) {
+            keyword2 = null;
+        }
+
+        if(keyword.equalsIgnoreCase("true"))
+            keyword3 = Boolean.TRUE;
+        else if (keyword.equalsIgnoreCase("false")) {
+            keyword3 = Boolean.FALSE;
+        }
+
+
+        Page<Country> pageCountry = countryRepository.findByCountryNameContainingIgnoreCaseOrCountryIdOrStatus( pageable,keyword,keyword2,keyword3);
         List<CountryDto> countries = appUtils.countriesToDtos(pageCountry.getContent());
         return HttpResponse.builder()
                 .pageNumber(pageCountry.getNumber())
@@ -119,6 +143,7 @@ public class CountryServiceImpl implements CountryService {
                 .data(countries)
                 .build();
     }
+
 
     @Override
     public CountryDto updateCountry(CountryDto c, int id) {

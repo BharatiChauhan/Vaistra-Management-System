@@ -12,6 +12,7 @@ import com.vaistramanagement.vaistramanagement.repositories.DistrictRepository;
 import com.vaistramanagement.vaistramanagement.repositories.StateRepository;
 import com.vaistramanagement.vaistramanagement.service.BankBranchService;
 import com.vaistramanagement.vaistramanagement.utils.AppUtils;
+import jakarta.persistence.Id;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BankBranchServiceImpl implements BankBranchService
@@ -167,6 +169,17 @@ public class BankBranchServiceImpl implements BankBranchService
                         String[] parts = line.split(",");
                         BankBranch csvData = new BankBranch();
 
+
+                        BankBranchDto dto = new BankBranchDto();
+                        Bank bank = bankRepository.findById(dto.getBankId())
+                                .orElseThrow(()->new ResourceNotFoundException("Bank with ID '"+dto.getBankId()+"' not found!"));
+
+                        State state=stateRepository.findById(dto.getStateId())
+                                .orElseThrow(()->new ResourceNotFoundException("State ID '"+dto.getStateId()+"' not found!"));
+
+                        District district=districtRepository.findById(dto.getDistrictId())
+                                .orElseThrow(()->new ResourceNotFoundException("District with ID '"+dto.getDistrictId()+"' not found!"));
+
 //                        csvData.setCountryId(Integer.parseInt(parts[0]));
 
                         csvData.setBranchAdd(parts[1]);
@@ -176,9 +189,29 @@ public class BankBranchServiceImpl implements BankBranchService
                         csvData.setFromTime(LocalTime.parse(parts[5]));
                         csvData.setIfsc(parts[6]);
                         csvData.setPhoneNo(Integer.valueOf(parts[7]));
-
-
                         csvData.setStatus(Boolean.parseBoolean(parts[8]));
+                        csvData.setToTime(LocalTime.parse(parts[9]));
+                       csvData.setBank(bank);
+                       csvData.setDistrict(district);
+                       csvData.setState(state
+
+                       );
+
+
+
+//                      csvData.setBank(parts[10]);
+//                        csvData.setDistrict(parts[11]);
+//                        csvData.setState(parts[12]);
+
+//                        String districtName=parts[11];
+////                   District district=districtRepository.findByDistrictName(districtName);
+////                   csvData.setDistrict(district);
+////
+//                        String stateName=parts[12];
+//                        State state=stateRepository.findByStateName(stateName);
+//                        csvData.setState(state);
+
+
 
                         // Set other columns as needed
                         return csvData;

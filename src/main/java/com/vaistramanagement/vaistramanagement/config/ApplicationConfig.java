@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static com.vaistramanagement.vaistramanagement.entity.Role.ADMIN;
+import static com.vaistramanagement.vaistramanagement.entity.Role.USER;
 
 @Configuration
 @RequiredArgsConstructor

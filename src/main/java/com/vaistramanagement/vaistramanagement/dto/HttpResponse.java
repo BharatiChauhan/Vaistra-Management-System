@@ -2,6 +2,7 @@ package com.vaistramanagement.vaistramanagement.dto;
 
 
 import lombok.*;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,4 +21,7 @@ public class HttpResponse {
     private Boolean isLastPage;
 
     List<?> data = new ArrayList<>();
+
+
+
 }
