@@ -18,23 +18,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.context.support.BeanDefinitionDsl;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.function.Supplier;
 
 
 @Service
 @RequiredArgsConstructor
+
 public class AuthenticationService {
 
     private final UserRepository repository;
@@ -47,6 +42,9 @@ public class AuthenticationService {
     private TokenRepository tokenRepository;
 
     private final AuthenticationManager authenticationManager;
+
+
+
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()

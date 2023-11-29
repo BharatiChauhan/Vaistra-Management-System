@@ -2,10 +2,7 @@ package com.vaistramanagement.vaistramanagement.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "country")
+@Builder
 
 public class Country
 {
@@ -41,5 +39,6 @@ public class Country
     private boolean status;
 
 
-
+    public Country(String india, boolean b) {
+    }
 }
